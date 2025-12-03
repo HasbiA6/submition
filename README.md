@@ -4,79 +4,57 @@
 - **Email:** [hasbiabdullah75571@gmail.com]
 - **ID Dicoding:** [M198D5Y0743]
 
-## Overview Proyek
+# Proyek Klasifikasi Gambar: [Flowers Dataset]
 
-Proyek ini bertujuan untuk mengembangkan model klasifikasi gambar menggunakan Convolutional Neural Network (CNN) untuk mengidentifikasi berbagai jenis bunga. Model dilatih menggunakan dataset gambar bunga yang dibagi menjadi set pelatihan, validasi, dan pengujian. Tujuan utamanya adalah untuk mencapai akurasi klasifikasi minimal 85% pada set pengujian.
+## Deskripsi Proyek
+Proyek ini bertujuan untuk mengembangkan model klasifikasi gambar menggunakan *Convolutional Neural Network* (CNN) untuk mengidentifikasi berbagai jenis bunga dari dataset `Flowers`. Model ini dilatih menggunakan TensorFlow dan Keras, serta dioptimalkan untuk performa dan akurasi dalam mengenali sepuluh kelas bunga yang berbeda.
 
-## Data Preparation
+## Fitur
+-   **Klasifikasi Gambar:** Menggunakan model CNN untuk mengklasifikasikan gambar bunga ke dalam 10 kategori berbeda.
+-   **Augmentasi Data:** Mengimplementasikan augmentasi data untuk meningkatkan robustnya model dan mencegah *overfitting*.
+-   **Optimasi Model:** Menggunakan *optimizer* Adam dan *callback* seperti `EarlyStopping` dan `ModelCheckpoint` untuk melatih model secara efisien.
+-   **Konversi Model:** Model dikonversi ke format TensorFlow Lite (TFLite) dan TensorFlow.js (TFJS) untuk *deployment* di berbagai platform.
 
-Dataset gambar bunga diakses dari Google Drive (`/content/drive/MyDrive/FLOWERS`). Dataset ini terdiri dari gambar-gambar bunga yang dikategorikan ke dalam beberapa kelas. Berikut adalah struktur direktori dataset:
+## Struktur Dataset
+Dataset bunga dibagi menjadi tiga direktori utama:
+-   `train`: Berisi gambar untuk pelatihan model.
+-   `validation`: Berisi gambar untuk validasi selama pelatihan.
+-   `test`: Berisi gambar untuk evaluasi akhir model.
 
-```
-/content/drive/MyDrive/FLOWERS
-├── train
-│   ├── Bunga Daisy
-│   ├── Bunga Mawar
-│   ├── ...
-├── validation
-│   ├── Bunga Tulip
-│   ├── Bunga Matahari
-│   ├── ...
-└── test
-    ├── Bunga Daisy
-    ├── Bunga Tulip
-    ├── ...
-```
+Setiap direktori memiliki sub-direktori yang sesuai dengan nama kelas bunga (misalnya, 'Bunga Dandelions', 'Bunga Daisy', dll.).
 
-Jumlah kelas bunga yang terdeteksi adalah **10**.
+## Teknologi yang Digunakan
+-   Python
+-   TensorFlow 2.x
+-   Keras
+-   Numpy
+-   Pandas
+-   Matplotlib
+-   Scikit-learn
+-   `split-folders` (untuk membagi dataset)
+-   `tensorflowjs` (untuk konversi model ke TFJS)
 
-**Data Augmentation:**
-Untuk meningkatkan ketahanan model dan mencegah overfitting, augmentasi data diterapkan pada set pelatihan menggunakan `ImageDataGenerator` dengan parameter seperti rotasi, pergeseran lebar/tinggi, shear, zoom, dan flip horizontal. Data juga di-rescale ke rentang `0-1`.
+## Instalasi
+1.  **Clone repositori:**
+    ```bash
+    git clone [LINK_REPO_ANDA]
+    cd [NAMA_FOLDER_PROYEK]
+    ```
+2.  **Buat virtual environment (opsional tapi direkomendasikan):**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate # On Windows, use `venv\Scripts\activate`
+    ```
+3.  **Instal dependensi:**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-## Model Architecture
+## Penggunaan
+1.  **Persiapan Data:** Pastikan dataset bunga Anda tersusun rapi dalam direktori `FLOWERS` dengan sub-direktori `train`, `validation`, dan `test`, serta sub-direktori kelas bunga di dalamnya.
+2.  **Pelatihan Model:** Jalankan notebook Jupyter (`[NAMA_NOTEBOOK_ANDA].ipynb`) untuk melatih model. Pastikan semua *cell* dijalankan secara berurutan.
+3.  **Evaluasi Model:** Setelah pelatihan selesai, model akan dievaluasi menggunakan data test dan *confusion matrix* akan ditampilkan.
+4.  **Inference:** Anda dapat menggunakan bagian Inferensi di notebook untuk menguji model dengan gambar baru.
 
-Model yang digunakan adalah Sequential CNN dengan arsitektur sebagai berikut:
-
-- `Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3))`
-- `MaxPooling2D(2, 2)`
-- `Conv2D(64, (3, 3), activation='relu')`
-- `MaxPooling2D(2, 2)`
-- `Conv2D(128, (3, 3), activation='relu')`
-- `MaxPooling2D(2, 2)`
-- `Flatten()`
-- `Dense(512, activation='relu')`
-- `Dense(jumlah_kelas, activation='softmax')`
-
-Model dikompilasi dengan optimizer `Adam` (learning_rate=0.001), fungsi loss `categorical_crossentropy`, dan metrik `accuracy`.
-
-## Training & Evaluation
-
-Model dilatih dengan `ImageDataGenerator` yang dikonversi ke `tf.data.Dataset`. Digunakan custom callback untuk menghentikan pelatihan jika akurasi dan validasi akurasi mencapai >= 95%, serta `EarlyStopping` untuk memantau `val_loss` dengan kesabaran 5 epoch untuk mencegah overfitting. Model terbaik disimpan selama pelatihan.
-
-- **Jumlah Epoch Pelatihan:** Model dilatih selama 50 epoch, namun dihentikan lebih awal pada epoch ke-16 karena Early Stopping.
-- **Final Test Loss:** `0.3695`
-- **Final Test Accuracy:** `0.8781`
-
-Model berhasil mencapai akurasi pengujian sebesar **87.81%**, yang melebihi target 85%.
-
-**Visualisasi Hasil Pelatihan:**
-Grafik akurasi dan loss pelatihan serta validasi telah divisualisasikan untuk menunjukkan performa model sepanjang epoch.
-
-## Model Conversion
-
-Model yang telah dilatih diekspor dan dikonversi ke format `TensorFlow Lite (TFLite)` dan `TensorFlow.js (TFJS)` untuk memudahkan deployment pada perangkat mobile atau web.
-
-- **SavedModel:** `saved_model/`
-- **TFLite Model:** `vegs.tflite`
-- **TFJS Model:** `model_tfjs/`
-
-## Inference (Contoh)
-
-Model dapat digunakan untuk melakukan prediksi pada gambar baru. Contoh prediksi pada gambar tunggal menunjukkan model dapat mengklasifikasikan jenis bunga dengan tingkat kepercayaan tertentu.
-
-```python
-# Contoh output inferensi
-# Gambar: 9.jpg
-# Prediksi: Bunga Mawar
-# Confidence: 99.58%
-```
+## Hasil
+Model mencapai akurasi sebesar [ISI_AKURASI_TEST_DISINI]% pada dataset pengujian.
