@@ -1,8 +1,8 @@
 # Proyek Klasifikasi Gambar: Bunga
 
-- **Nama:** [Input Nama Anda]
-- **Email:** [Input Email Anda]
-- **ID Dicoding:** [Input Username Dicoding Anda]
+- **Nama:** [Hasbi Abdullah]
+- **Email:** [hasbiabdullah75571@gmail.com]
+- **ID Dicoding:** [M198D5Y0743]
 
 ## Overview Proyek
 
