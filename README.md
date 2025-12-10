@@ -1,60 +1,78 @@
-# Proyek Klasifikasi Gambar: Bunga
+project_name = "Klasifikasi Gambar: Shoe vs Sandal vs Boot"
+author_name = "Hasbi Abdullah"
+author_email = "hasbiabdullah75571@gmail.com"
+dicoding_id = "m198d5y0743"
 
-- **Nama:** [Hasbi Abdullah]
-- **Email:** [hasbiabdullah75571@gmail.com]
-- **ID Dicoding:** [M198D5Y0743]
+train_acc = history.history['accuracy'][-1] if 'accuracy' in history.history else 'N/A'
+val_acc = history.history['val_accuracy'][-1] if 'val_accuracy' in history.history else 'N/A'
+test_loss = loss if 'loss' in globals() else 'N/A'
+test_accuracy = acc if 'acc' in globals() else 'N/A'
 
-# Proyek Klasifikasi Gambar: [Flowers Dataset]
+readme_content = f"""
+# {project_name}
 
-## Deskripsi Proyek
-Proyek ini bertujuan untuk mengembangkan model klasifikasi gambar menggunakan *Convolutional Neural Network* (CNN) untuk mengidentifikasi berbagai jenis bunga dari dataset `Flowers`. Model ini dilatih menggunakan TensorFlow dan Keras, serta dioptimalkan untuk performa dan akurasi dalam mengenali sepuluh kelas bunga yang berbeda.
+- **Nama:** {author_name}
+- **Email:** {author_email}
+- **ID Dicoding:** {dicoding_id}
 
-## Fitur
--   **Klasifikasi Gambar:** Menggunakan model CNN untuk mengklasifikasikan gambar bunga ke dalam 10 kategori berbeda.
--   **Augmentasi Data:** Mengimplementasikan augmentasi data untuk meningkatkan robustnya model dan mencegah *overfitting*.
--   **Optimasi Model:** Menggunakan *optimizer* Adam dan *callback* seperti `EarlyStopping` dan `ModelCheckpoint` untuk melatih model secara efisien.
--   **Konversi Model:** Model dikonversi ke format TensorFlow Lite (TFLite) dan TensorFlow.js (TFJS) untuk *deployment* di berbagai platform.
+## 1. Pendahuluan
+Proyek ini adalah implementasi sistem klasifikasi gambar menggunakan Convolutional Neural Network (CNN) untuk mengidentifikasi jenis alas kaki (Sepatu, Sandal, atau Boot). Dataset yang digunakan adalah 'Shoe vs Sandal vs Boot'.
 
-## Struktur Dataset
-Dataset bunga dibagi menjadi tiga direktori utama:
--   `train`: Berisi gambar untuk pelatihan model.
--   `validation`: Berisi gambar untuk validasi selama pelatihan.
--   `test`: Berisi gambar untuk evaluasi akhir model.
+## 2. Setup Lingkungan
+Untuk menjalankan notebook ini, pastikan Anda telah menginstal semua dependensi yang tercantum dalam `requirements.txt`. Anda dapat menginstalnya menggunakan pip:
 
-Setiap direktori memiliki sub-direktori yang sesuai dengan nama kelas bunga (misalnya, 'Bunga Dandelions', 'Bunga Daisy', dll.).
+```bash
+pip install -r requirements.txt
+```
 
-## Teknologi yang Digunakan
--   Python
--   TensorFlow 2.x
--   Keras
--   Numpy
--   Pandas
--   Matplotlib
--   Scikit-learn
--   `split-folders` (untuk membagi dataset)
--   `tensorflowjs` (untuk konversi model ke TFJS)
+## 3. Persiapan Data
+Dataset 'Shoe vs Sandal vs Boot' diekstrak dan kemudian dibagi menjadi data pelatihan, validasi, dan pengujian dengan rasio 70:15:15. Augmentasi data (rotasi, pergeseran lebar/tinggi, shear, zoom, horizontal flip) diterapkan pada data pelatihan untuk meningkatkan ketahanan model.
 
-## Instalasi
-1.  **Clone repositori:**
-    ```bash
-    git clone [LINK_REPO_ANDA]
-    cd [NAMA_FOLDER_PROYEK]
-    ```
-2.  **Buat virtual environment (opsional tapi direkomendasikan):**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate # On Windows, use `venv\Scripts\activate`
-    ```
-3.  **Instal dependensi:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+### Statistik Data:
+- Jumlah gambar pelatihan: {train_generator.samples}
+- Jumlah gambar validasi: {validation_from_validation_dir_generator.samples}
+- Jumlah gambar pengujian: {test_generator.samples}
+- Ukuran gambar: 150x150 piksel
+- Kelas: {', '.join(labels)}
 
-## Penggunaan
-1.  **Persiapan Data:** Pastikan dataset bunga Anda tersusun rapi dalam direktori `FLOWERS` dengan sub-direktori `train`, `validation`, dan `test`, serta sub-direktori kelas bunga di dalamnya.
-2.  **Pelatihan Model:** Jalankan notebook Jupyter (`[NAMA_NOTEBOOK_ANDA].ipynb`) untuk melatih model. Pastikan semua *cell* dijalankan secara berurutan.
-3.  **Evaluasi Model:** Setelah pelatihan selesai, model akan dievaluasi menggunakan data test dan *confusion matrix* akan ditampilkan.
-4.  **Inference:** Anda dapat menggunakan bagian Inferensi di notebook untuk menguji model dengan gambar baru.
+## 4. Arsitektur Model
+Model yang digunakan adalah arsitektur CNN sequential sederhana dengan beberapa lapisan konvolusi dan pooling, diikuti oleh lapisan Flatten dan Dense. Arsitekturnya adalah sebagai berikut:
 
-## Hasil
-Model mencapai akurasi sebesar [ISI_AKURASI_TEST_DISINI]% pada dataset pengujian.
+- `Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3))`
+- `MaxPooling2D(2, 2)`
+- `Conv2D(64, (3, 3), activation='relu')`
+- `MaxPooling2D(2, 2)`
+- `Conv2D(128, (3, 3), activation='relu')`
+- `MaxPooling2D(2, 2)`
+- `Flatten()`
+- `Dense(512, activation='relu')`
+- `Dense({train_generator.num_classes}, activation='softmax')`
+
+Model dikompilasi dengan optimizer Adam (learning rate 0.001) dan fungsi kerugian 'categorical_crossentropy'.
+
+## 5. Pelatihan Model
+Model dilatih selama maksimal 50 epoch dengan callback `EarlyStopping` (patience=5) untuk mencegah overfitting dan `ModelCheckpoint` untuk menyimpan model terbaik berdasarkan `val_loss`. Callback kustom juga diimplementasikan untuk menghentikan pelatihan jika akurasi dan validasi akurasi mencapai >= 95%.
+
+### Hasil Pelatihan Terakhir:
+- Akurasi Pelatihan: {train_acc:.2f}
+- Akurasi Validasi: {val_acc:.2f}
+
+## 6. Evaluasi Model
+Model dievaluasi pada set data pengujian yang terpisah.
+
+### Hasil Evaluasi pada Data Uji:
+- Loss Uji: {test_loss:.4f}
+- Akurasi Uji: {test_accuracy:.4f}
+
+## 7. Konversi Model
+Model telah dikonversi ke format `TensorFlow Lite` (`vegs.tflite`) dan `TensorFlow.js` (`model_tfjs/`) untuk penyebaran ke perangkat mobile atau web.
+
+## 8. Contoh Inferensi
+Bagian inferensi opsional menunjukkan bagaimana model dapat digunakan untuk memprediksi kelas gambar baru yang diunggah, menampilkan prediksi dan tingkat kepercayaan.
+
+"""
+
+with open('README.md', 'w') as f:
+    f.write(readme_content)
+
+print("File README.md berhasil dibuat.")
