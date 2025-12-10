@@ -1,19 +1,10 @@
 project_name = "Klasifikasi Gambar: Shoe vs Sandal vs Boot"
-author_name = "Hasbi Abdullah"
-author_email = "hasbiabdullah75571@gmail.com"
-dicoding_id = "m198d5y0743"
 
-train_acc = history.history['accuracy'][-1] if 'accuracy' in history.history else 'N/A'
-val_acc = history.history['val_accuracy'][-1] if 'val_accuracy' in history.history else 'N/A'
-test_loss = loss if 'loss' in globals() else 'N/A'
-test_accuracy = acc if 'acc' in globals() else 'N/A'
+# {Shoe vs Sandal vs Boot}
 
-readme_content = f"""
-# {project_name}
-
-- **Nama:** {author_name}
-- **Email:** {author_email}
-- **ID Dicoding:** {dicoding_id}
+- **Nama:** {Hasbi Abdullah}
+- **Email:** {hasbiabdullah75571@gmail.coml}
+- **ID Dicoding:** {m198d5y0743}
 
 ## 1. Pendahuluan
 Proyek ini adalah implementasi sistem klasifikasi gambar menggunakan Convolutional Neural Network (CNN) untuk mengidentifikasi jenis alas kaki (Sepatu, Sandal, atau Boot). Dataset yang digunakan adalah 'Shoe vs Sandal vs Boot'.
